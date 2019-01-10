@@ -17,6 +17,7 @@ namespace Client
 			if (disco.IsError)
 			{
 				Console.WriteLine(disco.Error);
+				Console.ReadKey();
 				return;
 			}
 
@@ -43,7 +44,7 @@ namespace Client
 			var apiClient = new HttpClient();
 			apiClient.SetBearerToken(tokenResponse.AccessToken);
 
-			var response = await apiClient.GetAsync("http://localhost:5001/identity");
+			var response = await apiClient.GetAsync("http://localhost:5001/api/value/identity");
 			if (!response.IsSuccessStatusCode)
 			{
 				Console.WriteLine(response.StatusCode);
