@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -11,11 +12,11 @@ namespace WebApi.Controllers
 	public class ValuesController : ControllerBase
 	{
 		// GET api/values
-		[HttpGet]
-		public ActionResult<IEnumerable<string>> Get()
-		{
-			return new string[] { "value1", "value2" };
-		}
+		//[HttpGet]
+		//public ActionResult<IEnumerable<string>> Get()
+		//{
+		//	return new string[] { "value1", "value2" };
+		//}
 
 		// GET api/values/5
 		[HttpGet("{id}")]
@@ -41,5 +42,13 @@ namespace WebApi.Controllers
 		public void Delete(int id)
 		{
 		}
-	}
+
+        [Route("identity")]
+        //[Authorize]
+		[HttpGet]
+        public IActionResult Get()
+		{
+			return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
+		}
+    }
 }
