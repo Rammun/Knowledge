@@ -125,18 +125,19 @@ namespace IdentityServer
 
 			//app.UseHttpsRedirection();
 			app.UseStaticFiles();
-			//app.UseCookiePolicy();
+            //app.UseCookiePolicy();
 
-			//app.UseAuthentication();
+            //app.UseAuthentication();
 
-			//app.UseMvc(routes =>
-			//{
-			//	routes.MapRoute(
-			//		name: "default",
-			//		template: "{controller=Home}/{action=Index}/{id?}");
+            //app.UseMvc(routes =>
+            //{
+            //	routes.MapRoute(
+            //		name: "default",
+            //		template: "{controller=Home}/{action=Index}/{id?}");
 			//});
 
-			app.UseMvcWithDefaultRoute();
+			app.UseIdentityServer();
+            app.UseMvcWithDefaultRoute();
         }
 	}
 }
