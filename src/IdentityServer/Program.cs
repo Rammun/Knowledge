@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityServerAspNetIdentity;
+using DAL;
+using DAL.DbInitialization;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,15 +23,7 @@ namespace IdentityServer
 			//var seed = args.Any(x => x == "/seed");
 			//if (seed) args = args.Except(new[] { "/seed" }).ToArray();
 
-			var host = CreateWebHostBuilder(args).Build();
-
-			//if (seed)
-			//{
-			//    var config = host.Services.GetRequiredService<IConfiguration>();
-			//    var connectionString = config.GetConnectionString("DefaultConnection");
-			//    SeedData.EnsureSeedData(connectionString);
-			//    return;
-			//}
+			var host = BuildWebHost(args);
 
 			using (var scope = host.Services.CreateScope())
 			{
@@ -49,7 +42,7 @@ namespace IdentityServer
 			host.Run();
 		}
 
-		public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+		public static IWebHost BuildWebHost(string[] args)
 		{
 			return WebHost.CreateDefaultBuilder(args)
 				.UseStartup<Startup>()
@@ -63,7 +56,8 @@ namespace IdentityServer
 						.Enrich.FromLogContext()
 						.WriteTo.File(@"identityserver4_log.txt")
 						.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate);
-				});
+				})
+				.Build();
 		}
     }
 }

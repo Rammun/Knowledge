@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using DAL;
+using DAL.DbInitialization;
+using DAL.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -12,12 +15,13 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IdentityServer.Data;
-using IdentityServerAspNetIdentity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using IdentityServer.Models;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace IdentityServer
 {
@@ -32,14 +36,12 @@ namespace IdentityServer
 		public IConfiguration Configuration { get; }
 		public IHostingEnvironment Environment { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
 		{
 			var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 			var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
-			services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString,
-				sql => sql.MigrationsAssembly(migrationsAssembly)));
+			services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
 
             services
 				.AddDefaultIdentity<ApplicationUser>()
@@ -47,11 +49,6 @@ namespace IdentityServer
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
-            //services
-            //    .AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
 
             services.TryAddScoped<DbContext, ApplicationDbContext>();
             services.TryAddScoped<IRoleStore<IdentityRole>, RoleStore<IdentityRole>>();
@@ -67,26 +64,21 @@ namespace IdentityServer
             });
 
             var builder = services.AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
-            })
-                //.AddInMemoryIdentityResources(Config.GetIdentityResources())
-                //.AddInMemoryApiResources(Config.GetApis())
-                //.AddInMemoryClients(Config.GetClients())
+	            {
+	                options.Events.RaiseErrorEvents = true;
+	                options.Events.RaiseInformationEvents = true;
+	                options.Events.RaiseFailureEvents = true;
+	                options.Events.RaiseSuccessEvents = true;
+	            }) 
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseNpgsql(connectionString,
-                        sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = b => b.UseNpgsql(connectionString,	sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 // this adds the operational data from DB (codes, tokens, consents)
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseNpgsql(connectionString,
-                        sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = b => b.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
 
                     // this enables automatic token cleanup. this is optional.
                     //  options.EnableTokenCleanup = true;
@@ -114,9 +106,12 @@ namespace IdentityServer
         }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
-			if (env.IsDevelopment())
+			loggerFactory.AddSerilog();
+
+
+            if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 				app.UseDatabaseErrorPage();
