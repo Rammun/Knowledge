@@ -102,6 +102,21 @@ namespace DAL.DbInitialization
                         IdentityServerConstants.StandardScopes.Profile,
                         "api1"
                     }
+                },
+
+				new Client
+				{
+					ClientId = "spa",
+					AllowedGrantTypes = GrantTypes.Implicit,
+					AllowAccessTokensViaBrowser = true,
+					RedirectUris = {
+						"http://localhost:5003/callback.html",
+						"http://localhost:5003/popup.html",
+						"http://localhost:5003/silent.html"
+					},
+					PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
+					AllowedScopes = { "openid", "profile", "email", "api1" },
+					AllowedCorsOrigins = { "http://localhost:5003" }
                 }
             };
         }

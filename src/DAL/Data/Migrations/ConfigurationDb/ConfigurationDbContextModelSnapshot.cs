@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace IdentityServer.Data.Migrations.ConfigurationDb
+namespace DAL.Data.Migrations.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
     partial class ConfigurationDbContextModelSnapshot : ModelSnapshot

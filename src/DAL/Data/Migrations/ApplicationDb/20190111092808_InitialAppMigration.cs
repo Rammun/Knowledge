@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace IdentityServer.Data.Migrations.ApplicationDbContext
+namespace DAL.Data.Migrations.ApplicationDb
 {
-    public partial class InitialAuthMigration : Migration
+    public partial class InitialAppMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace IdentityServer.Data.Migrations.ApplicationDbContext
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(maxLength: 100, nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
@@ -26,7 +26,7 @@ namespace IdentityServer.Data.Migrations.ApplicationDbContext
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(maxLength: 100, nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -93,8 +93,8 @@ namespace IdentityServer.Data.Migrations.ApplicationDbContext
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(nullable: false),
-                    ProviderKey = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 100, nullable: false),
+                    ProviderKey = table.Column<string>(maxLength: 100, nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },
@@ -138,8 +138,8 @@ namespace IdentityServer.Data.Migrations.ApplicationDbContext
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    LoginProvider = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 100, nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

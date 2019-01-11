@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace IdentityServer.Data.Migrations.ConfigurationDb
+namespace DAL.Data.Migrations.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20190110051921_InitialIdentityServerConfigurationDbMigration")]
+    [Migration("20190111092828_InitialIdentityServerConfigurationDbMigration")]
     partial class InitialIdentityServerConfigurationDbMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

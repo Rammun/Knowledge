@@ -109,7 +109,7 @@ namespace DAL.DbInitialization
 				Console.WriteLine("bob already exists");
 			}
 
-
+			// IdentityServer init
 			if (!_configurationDbContext.Clients.Any())
 			{
 				foreach (var client in Config.GetClients().ToList())
