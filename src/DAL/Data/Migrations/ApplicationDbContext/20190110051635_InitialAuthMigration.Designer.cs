@@ -3,15 +3,18 @@ using System;
 using IdentityServer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using DAL.DbInitialization;
 
 namespace IdentityServer.Data.Migrations.ApplicationDbContext
 {
-    [DbContext(typeof(Data.ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DAL.ApplicationDbContext))]
+    [Migration("20190110051635_InitialAuthMigration")]
+    partial class InitialAuthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
