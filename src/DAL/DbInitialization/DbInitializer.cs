@@ -13,129 +13,140 @@ using Microsoft.Extensions.Options;
 
 namespace DAL.DbInitialization
 {
-	public class DbInitializer
-	{
-		UserManager<ApplicationUser> _userManager;
-		RoleManager<IdentityRole> _roleManager;
-		ApplicationDbContext _applicationDbContext;
-		ConfigurationDbContext _configurationDbContext;
-		PersistedGrantDbContext _persistedGrantDbContext; 
+    public class DbInitializer
+    {
+        UserManager<ApplicationUser> _userManager;
+        RoleManager<IdentityRole> _roleManager;
+        ApplicationDbContext _applicationDbContext;
+        ConfigurationDbContext _configurationDbContext;
+        PersistedGrantDbContext _persistedGrantDbContext;
 
-		public DbInitializer(
-			UserManager<ApplicationUser> userManager,
-			RoleManager<IdentityRole> roleManager,
-			ApplicationDbContext applicationDbContext,
-			ConfigurationDbContext configurationDbContext,
-			PersistedGrantDbContext persistedGrantDbContext)
-		{
-			_userManager = userManager;
-			_roleManager = roleManager;	
-			_applicationDbContext = applicationDbContext;
-			_configurationDbContext = configurationDbContext;
-			_persistedGrantDbContext = persistedGrantDbContext;
-		}
+        public DbInitializer(
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext applicationDbContext,
+            ConfigurationDbContext configurationDbContext,
+            PersistedGrantDbContext persistedGrantDbContext)
+        {
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _applicationDbContext = applicationDbContext;
+            _configurationDbContext = configurationDbContext;
+            _persistedGrantDbContext = persistedGrantDbContext;
+        }
 
-		public void Initialize()
-		{
-			_applicationDbContext.Database.Migrate();
-			_configurationDbContext.Database.Migrate();
-			_persistedGrantDbContext.Database.Migrate();
+        public void Initialize()
+        {
+            _applicationDbContext.Database.Migrate();
+            _configurationDbContext.Database.Migrate();
+            _persistedGrantDbContext.Database.Migrate();
 
-			var userMgr = _userManager;
-			var alice = userMgr.FindByNameAsync("alice").Result;
-			if (alice == null)
-			{
-				alice = new ApplicationUser
-				{
-					UserName = "alice"
-				};
-				var result = userMgr.CreateAsync(alice, "Pass123$").Result;
-				if (!result.Succeeded)
-				{
-					throw new Exception(result.Errors.First().Description);
-				}
+            var alice = _userManager.FindByNameAsync("alice").Result;
+            if (alice == null)
+            {
+                alice = new ApplicationUser
+                {
+                    UserName = "alice"
+                };
 
-				result = userMgr.AddClaimsAsync(alice, new Claim[]{
-						new Claim(JwtClaimTypes.Name, "Alice Smith"),
-						new Claim(JwtClaimTypes.GivenName, "Alice"),
-						new Claim(JwtClaimTypes.FamilyName, "Smith"),
-						new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
-						new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-						new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
-						new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json)
-					}).Result;
-				if (!result.Succeeded)
-				{
-					throw new Exception(result.Errors.First().Description);
-				}
-				Console.WriteLine("alice created");
-			}
-			else
-			{
-				Console.WriteLine("alice already exists");
-			}
+                var result = _userManager.CreateAsync(alice, "Pass123$").Result;
 
-			var bob = userMgr.FindByNameAsync("bob").Result;
-			if (bob == null)
-			{
-				bob = new ApplicationUser
-				{
-					UserName = "bob"
-				};
-				var result = userMgr.CreateAsync(bob, "Pass123$").Result;
-				if (!result.Succeeded)
-				{
-					throw new Exception(result.Errors.First().Description);
-				}
+                if (!result.Succeeded)
+                {
+                    throw new Exception(string.Join("; ", result.Errors.Select(er => er.Description)));
+                }
 
-				result = userMgr.AddClaimsAsync(bob, new Claim[]{
-						new Claim(JwtClaimTypes.Name, "Bob Smith"),
-						new Claim(JwtClaimTypes.GivenName, "Bob"),
-						new Claim(JwtClaimTypes.FamilyName, "Smith"),
-						new Claim(JwtClaimTypes.Email, "BobSmith@email.com"),
-						new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-						new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-						new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-						new Claim("location", "somewhere")
-					}).Result;
-				if (!result.Succeeded)
-				{
-					throw new Exception(result.Errors.First().Description);
-				}
-				Console.WriteLine("bob created");
-			}
-			else
-			{
-				Console.WriteLine("bob already exists");
-			}
+                result = _userManager.AddClaimsAsync(alice, new Claim[]{
+                        new Claim(JwtClaimTypes.Name, "Alice Smith"),
+                        new Claim(JwtClaimTypes.GivenName, "Alice"),
+                        new Claim(JwtClaimTypes.FamilyName, "Smith"),
+                        new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
+                        new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
+                        new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+                        new Claim(JwtClaimTypes.Address,
+                            @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }",
+                            IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json)
+                    }).Result;
 
+                if (!result.Succeeded)
+                {
+                    throw new Exception(string.Join("; ", result.Errors.Select(er => er.Description)));
+                }
 
-			if (!_configurationDbContext.Clients.Any())
-			{
-				foreach (var client in Config.GetClients().ToList())
-				{
-					_configurationDbContext.Clients.Add(client.ToEntity());
-				}
-				_configurationDbContext.SaveChanges();
-			}
+                Console.WriteLine("alice created");
+            }
+            else
+            {
+                Console.WriteLine("alice already exists");
+            }
 
-			if (!_configurationDbContext.IdentityResources.Any())
-			{
-				foreach (var resource in Config.GetIdentityResources().ToList())
-				{
-					_configurationDbContext.IdentityResources.Add(resource.ToEntity());
-				}
-				_configurationDbContext.SaveChanges();
-			}
+            var bob = _userManager.FindByNameAsync("bob").Result;
+            if (bob == null)
+            {
+                bob = new ApplicationUser
+                {
+                    UserName = "bob"
+                };
 
-			if (!_configurationDbContext.ApiResources.Any())
-			{
-				foreach (var resource in Config.GetApiResources().ToList())
-				{
-					_configurationDbContext.ApiResources.Add(resource.ToEntity());
-				}
-				_configurationDbContext.SaveChanges();
-			}
-		}
-	}
+                var result = _userManager.CreateAsync(bob, "Pass123$").Result;
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
+                }
+
+                result = _userManager.AddClaimsAsync(bob, new Claim[]{
+                        new Claim(JwtClaimTypes.Name, "Bob Smith"),
+                        new Claim(JwtClaimTypes.GivenName, "Bob"),
+                        new Claim(JwtClaimTypes.FamilyName, "Smith"),
+                        new Claim(JwtClaimTypes.Email, "BobSmith@email.com"),
+                        new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
+                        new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
+                        new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
+                        new Claim("location", "somewhere")
+                    }).Result;
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception(string.Join("; ", result.Errors.Select(er => er.Description)));
+                }
+
+                Console.WriteLine("bob created");
+            }
+            else
+            {
+                Console.WriteLine("bob already exists");
+            }
+
+            // IdentityServer init
+            if (!_configurationDbContext.Clients.Any())
+            {
+                foreach (var client in Config.GetClients().ToList())
+                {
+                    _configurationDbContext.Clients.Add(client.ToEntity());
+                }
+
+                _configurationDbContext.SaveChanges();
+            }
+
+            if (!_configurationDbContext.IdentityResources.Any())
+            {
+                foreach (var resource in Config.GetIdentityResources().ToList())
+                {
+                    _configurationDbContext.IdentityResources.Add(resource.ToEntity());
+                }
+
+                _configurationDbContext.SaveChanges();
+            }
+
+            if (!_configurationDbContext.ApiResources.Any())
+            {
+                foreach (var resource in Config.GetApiResources().ToList())
+                {
+                    _configurationDbContext.ApiResources.Add(resource.ToEntity());
+                }
+
+                _configurationDbContext.SaveChanges();
+            }
+        }
+    }
 }

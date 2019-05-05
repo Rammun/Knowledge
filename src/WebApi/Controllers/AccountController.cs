@@ -9,10 +9,10 @@ namespace WebApi.Controllers
 {
     public class AccountController : ApiBaseController
     {
-		[HttpGet]
-		public ActionResult<string> Login(int id)
-		{
-			return "value";
-		}
+        [HttpGet]
+        public ActionResult<string> Login(int id)
+        {
+            return "value";
+        }
     }
 }
