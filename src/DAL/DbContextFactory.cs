@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using IdentityServer4.EntityFramework.DbContexts;
@@ -8,15 +9,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace DAL
+namespace IdentityDAL
 {
-    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    public class IdentityDataDbContextFactory : IDesignTimeDbContextFactory<IdentityDataDbContext>
     {
-        public ApplicationDbContext CreateDbContext(string[] args)
+        public IdentityDataDbContext CreateDbContext(string[] args)
         {
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseNpgsql("Server=localhost;Port=5432;Database=identity_002;User Id=postgres;Password=qwe123;", sql => sql.MigrationsAssembly(typeof(ApplicationDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
-            return new ApplicationDbContext(builder.Options);
+            var builder = new DbContextOptionsBuilder<IdentityDataDbContext>();
+            builder.UseNpgsql(ConfigurationHelper.DefaultConnectionString, sql => sql.MigrationsAssembly(typeof(IdentityDataDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
+            return new IdentityDataDbContext(builder.Options);
         }
     }
 
@@ -25,7 +26,7 @@ namespace DAL
         public ConfigurationDbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<ConfigurationDbContext>();
-            builder.UseNpgsql("Server=localhost;Port=5432;Database=identity_002;User Id=postgres;Password=qwe123;", sql => sql.MigrationsAssembly(typeof(ConfigurationDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
+            builder.UseNpgsql(ConfigurationHelper.DefaultConnectionString, sql => sql.MigrationsAssembly(typeof(ConfigurationDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
             return new ConfigurationDbContext(builder.Options, new ConfigurationStoreOptions());
         }
     }
@@ -35,7 +36,7 @@ namespace DAL
         public PersistedGrantDbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<PersistedGrantDbContext>();
-            builder.UseNpgsql("Server=localhost;Port=5432;Database=identity_002;User Id=postgres;Password=qwe123;", sql => sql.MigrationsAssembly(typeof(PersistedGrantDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
+            builder.UseNpgsql(ConfigurationHelper.DefaultConnectionString, sql => sql.MigrationsAssembly(typeof(PersistedGrantDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
             return new PersistedGrantDbContext(builder.Options, new OperationalStoreOptions());
         }
     }

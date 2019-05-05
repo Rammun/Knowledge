@@ -34,7 +34,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\DAL\DAL.csproj" />
+    <ProjectReference Include="..\DAL\IdentityDAL.csproj" />
   </ItemGroup>
 
 </Project>

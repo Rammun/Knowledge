@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using DAL;
-using DAL.DbInitialization;
-using DAL.Entities;
+using IdentityDAL;
+using IdentityDAL.DbInitialization;
+using IdentityDAL.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using IdentityServer.Models;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
@@ -40,16 +39,16 @@ namespace IdentityServer
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
+            services.AddDbContext<IdentityDataDbContext>(options => options.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
 
             services
                 .AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<IdentityDataDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.TryAddScoped<DbContext, ApplicationDbContext>();
+            services.TryAddScoped<DbContext, IdentityDataDbContext>();
             services.TryAddScoped<IRoleStore<IdentityRole>, RoleStore<IdentityRole>>();
             services.TryAddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
             services.AddTransient<DbInitializer>();

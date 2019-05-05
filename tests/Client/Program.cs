@@ -28,12 +28,13 @@ namespace Client
                 ClientId = "client",
                 ClientSecret = "secret",
 
-                Scope = "api1"
+                Scope = "kn-api"
             });
 
             if (tokenResponse.IsError)
             {
                 Console.WriteLine(tokenResponse.Error);
+                Console.ReadKey();
                 return;
             }
 

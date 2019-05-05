@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using DAL.Entities;
+using IdentityDAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DAL
+namespace IdentityDAL
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class IdentityDataDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public IdentityDataDbContext(DbContextOptions<IdentityDataDbContext> options)
             : base(options)
         {
         }

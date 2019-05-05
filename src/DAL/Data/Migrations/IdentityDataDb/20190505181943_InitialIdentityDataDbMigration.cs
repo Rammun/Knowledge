@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace DAL.Data.Migrations.ApplicationDb
+namespace IdentityDAL.Data.Migrations.IdentityDataDb
 {
-    public partial class InitialApplicationDbMigration : Migration
+    public partial class InitialIdentityDataDbMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -14,7 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using DAL.Entities;
+using IdentityDAL.Entities;
 using IdentityServer.Models;
 
 namespace IdentityServer.Quickstart.Account

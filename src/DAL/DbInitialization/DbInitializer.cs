@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using DAL.Entities;
+using IdentityDAL.Entities;
 using IdentityModel;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
@@ -11,20 +11,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace DAL.DbInitialization
+namespace IdentityDAL.DbInitialization
 {
     public class DbInitializer
     {
         UserManager<ApplicationUser> _userManager;
         RoleManager<IdentityRole> _roleManager;
-        ApplicationDbContext _applicationDbContext;
+        IdentityDataDbContext _applicationDbContext;
         ConfigurationDbContext _configurationDbContext;
         PersistedGrantDbContext _persistedGrantDbContext;
 
         public DbInitializer(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            ApplicationDbContext applicationDbContext,
+            IdentityDataDbContext applicationDbContext,
             ConfigurationDbContext configurationDbContext,
             PersistedGrantDbContext persistedGrantDbContext)
         {
@@ -35,7 +35,7 @@ namespace DAL.DbInitialization
             _persistedGrantDbContext = persistedGrantDbContext;
         }
 
-        public void Initialize()
+        public void Seed()
         {
             _applicationDbContext.Database.Migrate();
             _configurationDbContext.Database.Migrate();
@@ -120,7 +120,7 @@ namespace DAL.DbInitialization
             // IdentityServer init
             if (!_configurationDbContext.Clients.Any())
             {
-                foreach (var client in Config.GetClients().ToList())
+                foreach (var client in IdentityResourcesConfiguration.GetClients().ToList())
                 {
                     _configurationDbContext.Clients.Add(client.ToEntity());
                 }
@@ -130,7 +130,7 @@ namespace DAL.DbInitialization
 
             if (!_configurationDbContext.IdentityResources.Any())
             {
-                foreach (var resource in Config.GetIdentityResources().ToList())
+                foreach (var resource in IdentityResourcesConfiguration.GetIdentityResources().ToList())
                 {
                     _configurationDbContext.IdentityResources.Add(resource.ToEntity());
                 }
@@ -140,7 +140,7 @@ namespace DAL.DbInitialization
 
             if (!_configurationDbContext.ApiResources.Any())
             {
-                foreach (var resource in Config.GetApiResources().ToList())
+                foreach (var resource in IdentityResourcesConfiguration.GetApiResources().ToList())
                 {
                     _configurationDbContext.ApiResources.Add(resource.ToEntity());
                 }

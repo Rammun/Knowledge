@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using DAL.Entities;
+using IdentityDAL.Entities;
 using IdentityServer.Models;
 
 namespace IdentityServer4.Quickstart.UI
