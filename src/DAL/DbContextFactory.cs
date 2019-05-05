@@ -15,28 +15,28 @@ namespace DAL
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseNpgsql("Server=localhost;Port=5432;Database=identity_001;User Id=postgres;Password=qwe123;", sql => sql.MigrationsAssembly(typeof(ApplicationDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
+            builder.UseNpgsql("Server=localhost;Port=5432;Database=identity_002;User Id=postgres;Password=qwe123;", sql => sql.MigrationsAssembly(typeof(ApplicationDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
             return new ApplicationDbContext(builder.Options);
         }
     }
 
-	public class ConfigurationDbContextFactory : IDesignTimeDbContextFactory<ConfigurationDbContext>
-	{
-		public ConfigurationDbContext CreateDbContext(string[] args)
-		{
-			var builder = new DbContextOptionsBuilder<ConfigurationDbContext>();
-			builder.UseNpgsql("Server=localhost;Port=5432;Database=identity_001;User Id=postgres;Password=qwe123;", sql => sql.MigrationsAssembly(typeof(ConfigurationDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
-			return new ConfigurationDbContext(builder.Options, new ConfigurationStoreOptions());
-		}
-	}
+    public class ConfigurationDbContextFactory : IDesignTimeDbContextFactory<ConfigurationDbContext>
+    {
+        public ConfigurationDbContext CreateDbContext(string[] args)
+        {
+            var builder = new DbContextOptionsBuilder<ConfigurationDbContext>();
+            builder.UseNpgsql("Server=localhost;Port=5432;Database=identity_002;User Id=postgres;Password=qwe123;", sql => sql.MigrationsAssembly(typeof(ConfigurationDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
+            return new ConfigurationDbContext(builder.Options, new ConfigurationStoreOptions());
+        }
+    }
 
-	public class PersistedGrantDbContextFactory : IDesignTimeDbContextFactory<PersistedGrantDbContext>
-	{
-		public PersistedGrantDbContext CreateDbContext(string[] args)
-		{
-			var builder = new DbContextOptionsBuilder<PersistedGrantDbContext>();
-			builder.UseNpgsql("Server=localhost;Port=5432;Database=identity_001;User Id=postgres;Password=qwe123;", sql => sql.MigrationsAssembly(typeof(PersistedGrantDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
-			return new PersistedGrantDbContext(builder.Options, new OperationalStoreOptions());
-		}
-	}
+    public class PersistedGrantDbContextFactory : IDesignTimeDbContextFactory<PersistedGrantDbContext>
+    {
+        public PersistedGrantDbContext CreateDbContext(string[] args)
+        {
+            var builder = new DbContextOptionsBuilder<PersistedGrantDbContext>();
+            builder.UseNpgsql("Server=localhost;Port=5432;Database=identity_002;User Id=postgres;Password=qwe123;", sql => sql.MigrationsAssembly(typeof(PersistedGrantDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
+            return new PersistedGrantDbContext(builder.Options, new OperationalStoreOptions());
+        }
+    }
 }

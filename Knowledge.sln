@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BC39A8C7-8BA2-4927-A093-A89D030F8ABE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "src\IdentityServer\IdentityServer.csproj", "{D7B936F9-DF7C-4583-ADCD-B55013181426}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "src\IdentityServer\IdentityServer.csproj", "{D7B936F9-DF7C-4583-ADCD-B55013181426}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E418819C-6F2E-4676-9976-0353705CAE22}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "tests\Client\Client.csproj", "{887CC0C4-E52E-4CBB-9EFD-E13395F924FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "src\WebApi\WebApi.csproj", "{4CB9F1C4-7FBD-444F-8AE1-2A572862049F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "src\WebApi\WebApi.csproj", "{4CB9F1C4-7FBD-444F-8AE1-2A572862049F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "src\DAL\DAL.csproj", "{7DCBC0C1-DE98-4B94-9897-EECFBFAEA3D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "src\DAL\DAL.csproj", "{7DCBC0C1-DE98-4B94-9897-EECFBFAEA3D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "src\BLL\BLL.csproj", "{D7ECC841-EB44-4E64-8EC9-5F34FCB44FB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "src\BLL\BLL.csproj", "{D7ECC841-EB44-4E64-8EC9-5F34FCB44FB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

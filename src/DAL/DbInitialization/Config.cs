@@ -57,7 +57,9 @@ namespace DAL.DbInitialization
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { "api1" },
+                    AllowOfflineAccess = true,
+                    RequireClientSecret = false
                 },
                 // OpenID Connect hybrid flow client (MVC)
                 new Client
@@ -104,19 +106,19 @@ namespace DAL.DbInitialization
                     }
                 },
 
-				new Client
-				{
-					ClientId = "spa",
-					AllowedGrantTypes = GrantTypes.Implicit,
-					AllowAccessTokensViaBrowser = true,
-					RedirectUris = {
-						"http://localhost:5003/callback.html",
-						"http://localhost:5003/popup.html",
-						"http://localhost:5003/silent.html"
-					},
-					PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
-					AllowedScopes = { "openid", "profile", "email", "api1" },
-					AllowedCorsOrigins = { "http://localhost:5003" }
+                new Client
+                {
+                    ClientId = "spa",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    RedirectUris = {
+                        "http://localhost:5003/callback.html",
+                        "http://localhost:5003/popup.html",
+                        "http://localhost:5003/silent.html"
+                    },
+                    PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
+                    AllowedScopes = { "openid", "profile", "email", "api1" },
+                    AllowedCorsOrigins = { "http://localhost:5003" }
                 }
             };
         }

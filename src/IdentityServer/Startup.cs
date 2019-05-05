@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,35 +24,35 @@ using Serilog;
 
 namespace IdentityServer
 {
-	public class Startup
-	{
-		public Startup(IConfiguration configuration, IHostingEnvironment environment)
-		{
-			Configuration = configuration;
-			Environment = environment;
+    public class Startup
+    {
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        {
+            Configuration = configuration;
+            Environment = environment;
         }
 
-		public IConfiguration Configuration { get; }
-		public IHostingEnvironment Environment { get; }
+        public IConfiguration Configuration { get; }
+        public IHostingEnvironment Environment { get; }
 
         public void ConfigureServices(IServiceCollection services)
-		{
-			var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-			var connectionString = Configuration.GetConnectionString("DefaultConnection");
+        {
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
-			services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
 
             services
-				.AddDefaultIdentity<ApplicationUser>()
-				.AddRoles<IdentityRole>()
+                .AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.TryAddScoped<DbContext, ApplicationDbContext>();
             services.TryAddScoped<IRoleStore<IdentityRole>, RoleStore<IdentityRole>>();
-			services.TryAddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
-			services.AddTransient<DbInitializer>();
+            services.TryAddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
+            services.AddTransient<DbInitializer>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -63,16 +63,16 @@ namespace IdentityServer
             });
 
             var builder = services.AddIdentityServer(options =>
-	            {
-	                options.Events.RaiseErrorEvents = true;
-	                options.Events.RaiseInformationEvents = true;
-	                options.Events.RaiseFailureEvents = true;
-	                options.Events.RaiseSuccessEvents = true;
-	            }) 
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+                })
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseNpgsql(connectionString,	sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = b => b.UseNpgsql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 // this adds the operational data from DB (codes, tokens, consents)
                 .AddOperationalStore(options =>
@@ -104,26 +104,26 @@ namespace IdentityServer
                 });
         }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-		{
-			loggerFactory.AddSerilog();
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddSerilog();
 
 
             if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-				app.UseDatabaseErrorPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Home/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				//app.UseHsts();
-			}
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                //app.UseHsts();
+            }
 
-			//app.UseHttpsRedirection();
-			app.UseStaticFiles();
+            //app.UseHttpsRedirection();
+            app.UseStaticFiles();
             //app.UseCookiePolicy();
 
             //app.UseAuthentication();
@@ -133,10 +133,10 @@ namespace IdentityServer
             //	routes.MapRoute(
             //		name: "default",
             //		template: "{controller=Home}/{action=Index}/{id?}");
-			//});
+            //});
 
-			app.UseIdentityServer();
+            app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
         }
-	}
+    }
 }
